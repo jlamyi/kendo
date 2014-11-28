@@ -38,7 +38,7 @@
       name="timed_roslaunch" output="screen">
     </node-->
 
-  <!-- open gripper control ???-->
+  <!-- open gripper control ??-->
   <!-- open the main program-->
    <!--node name="kendo" pkg="lab7" type="james.py" respawn="false" output="screen" /-->
 </launch>
