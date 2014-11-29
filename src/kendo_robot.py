@@ -28,8 +28,19 @@ right_arm.set_planner_id('RRTConnectkConfigDefault')
 right_arm.set_planning_time(1)
 listener = tf.TransformListener()
 
+# initialize last position
+last_x = 99.0
+last_y = 99.0
+last_z = 99.0
+error = 0.02
+
 def callback(message):
-    
+
+    global last_x 
+    global last_y 
+    global last_z 
+    global error 
+        
     try:
        if message.transforms[0].child_frame_id == 'ar_marker_23':
         #print(rospy.get_name() + " Message: %s" % (message.transforms[0].transform.translation) )
@@ -38,54 +49,62 @@ def callback(message):
             (trans,rot) = listener.lookupTransform('/base', '/ar_marker_23', rospy.Time(0))
             # may be useful in the future
             #(trans_head_camera,rot_head_camera) = listener.lookupTransform('/corrected_head', '/ar_marker_23', rospy.Time(0))
-                
-            x = trans[0]
-            # to avoid blocking the ar_Tag
-            if trans[1] > 0:
-               y = trans[1] + 0.04
+              
+              
+            if ((abs(trans[0]-last_x)<error) and (abs(trans[1]-last_y)<error)):
+                pass
             else:
-               y = trans[1] - 0.04
-            z = trans[2]
-            
-            print trans
-            
-            #x = float(message.transforms[0].transform.translation.x)
-            #y = float(message.transforms[0].transform.translation.y) 
-            #z = float(message.transforms[0].transform.translation.z)
-            #print x
-            #print y
-            #print z
-            
-            goal = PoseStamped()
-            goal.header.frame_id = "base"
-            
-            #goal position of gripper
-            goal.pose.position.x = x
-            goal.pose.position.y = y
-            goal.pose.position.z = 0.0
-            
-            #Orientation as a quaternion
-            goal.pose.orientation.x = 0.5
-            goal.pose.orientation.y = 0.5
-            goal.pose.orientation.z = 0.5
-            goal.pose.orientation.w = -0.5
-            
-            '''goal.pose.orientation.x = 0.70711
-            goal.pose.orientation.y = 0
-            goal.pose.orientation.z = 0.70711
-            goal.pose.orientation.w = 0'''
+                last_x = trans[0]
+                last_y = trans[1]
+                last_z = trans[2]
+                
+                x = trans[0]
+                # to avoid blocking the ar_Tag
+                if trans[1] > 0:
+                   y = trans[1] + 0.04
+                else:
+                   y = trans[1] - 0.04
+                z = trans[2]
+                
+                print trans
+                
+                #x = float(message.transforms[0].transform.translation.x)
+                #y = float(message.transforms[0].transform.translation.y) 
+                #z = float(message.transforms[0].transform.translation.z)
+                #print x
+                #print y
+                #print z
+                
+                goal = PoseStamped()
+                goal.header.frame_id = "base"
+                
+                #goal position of gripper
+                goal.pose.position.x = x
+                goal.pose.position.y = y
+                goal.pose.position.z = 0.0
+                
+                #Orientation as a quaternion
+                goal.pose.orientation.x = 0.5
+                goal.pose.orientation.y = 0.5
+                goal.pose.orientation.z = 0.5
+                goal.pose.orientation.w = -0.5
+                
+                '''goal.pose.orientation.x = 0.70711
+                goal.pose.orientation.y = 0
+                goal.pose.orientation.z = 0.70711
+                goal.pose.orientation.w = 0'''
 
-            #Set the goal state to the pose you just defined
-            right_arm.set_pose_target(goal)
+                #Set the goal state to the pose you just defined
+                right_arm.set_pose_target(goal)
 
-            #Set the start state for the left arm
-            right_arm.set_start_state_to_current_state()
+                #Set the start state for the left arm
+                right_arm.set_start_state_to_current_state()
 
-            #Plan a path
-            right_plan = right_arm.plan()
+                #Plan a path
+                right_plan = right_arm.plan()
 
-            #Execute the plan
-            right_arm.execute(right_plan) 
+                #Execute the plan
+                right_arm.execute(right_plan) 
 
     except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
         print 'exception'
