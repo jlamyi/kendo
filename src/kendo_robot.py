@@ -23,9 +23,9 @@ scene = moveit_commander.PlanningSceneInterface()
 left_arm = moveit_commander.MoveGroupCommander('left_arm')
 right_arm = moveit_commander.MoveGroupCommander('right_arm')
 left_arm.set_planner_id('RRTConnectkConfigDefault')
-left_arm.set_planning_time(10)
+left_arm.set_planning_time(1)
 right_arm.set_planner_id('RRTConnectkConfigDefault')
-right_arm.set_planning_time(10)
+right_arm.set_planning_time(1)
 listener = tf.TransformListener()
 
 def callback(message):
