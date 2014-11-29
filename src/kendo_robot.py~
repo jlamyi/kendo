@@ -15,7 +15,7 @@ from tf.msg import tfMessage
 moveit_commander.roscpp_initialize(sys.argv)
 
 #Start a node
-rospy.init_node('moveit_node')
+rospy.init_node('kendo_node')
 
 #Initialize both arms
 robot = moveit_commander.RobotCommander()
@@ -30,15 +30,22 @@ listener = tf.TransformListener()
 
 def callback(message):
     
-    if message.transforms[0].child_frame_id == 'ar_marker_23':
+    try:
+       if message.transforms[0].child_frame_id == 'ar_marker_23':
         #print(rospy.get_name() + " Message: %s" % (message.transforms[0].transform.translation) )
 
         #read position of artag
-        try:
+       
             (trans,rot) = listener.lookupTransform('/base', '/ar_marker_23', rospy.Time(0))
+            # may be useful in the future
+            #(trans_head_camera,rot_head_camera) = listener.lookupTransform('/corrected_head', '/ar_marker_23', rospy.Time(0))
                 
             x = trans[0]
-            y = trans[1]
+            # to avoid blocking the ar_Tag
+            if trans[1] > 0:
+               y = trans[1] + 0.04
+            else:
+               y = trans[1] - 0.04
             z = trans[2]
             
             print trans
@@ -56,7 +63,7 @@ def callback(message):
             #goal position of gripper
             goal.pose.position.x = x
             goal.pose.position.y = y
-            goal.pose.position.z = z-0.1
+            goal.pose.position.z = 0.0
             
             #Orientation as a quaternion
             goal.pose.orientation.x = 0.5
@@ -79,10 +86,11 @@ def callback(message):
             right_plan = right_arm.plan()
 
             #Execute the plan
-            right_arm.execute(right_plan)   
-            
-        except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
-            print 'exception'
+            right_arm.execute(right_plan) 
+
+    except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+        print 'exception'
+        
             
          
 
@@ -139,13 +147,75 @@ def start_position():
     left_arm.execute(left_plan)
     right_arm.execute(right_plan)
     
+def end_position():
+    #Left arm starting position
+    goal_left = PoseStamped()
+    goal_left.header.frame_id = "base"
+
+    #x, y, and z position
+    goal_left.pose.position.x = 0.0
+    goal_left.pose.position.y = 0.5
+    goal_left.pose.position.z = -0.6
+    
+    #Orientation as a quaternion
+    goal_left.pose.orientation.x = 0.0
+    goal_left.pose.orientation.y = -1.0
+    goal_left.pose.orientation.z = 0.0
+    goal_left.pose.orientation.w = 0.0
+    
+    #Set the goal state to the pose you just defined
+    left_arm.set_pose_target(goal_left)
+
+    #Set the start state for the arm
+    left_arm.set_start_state_to_current_state()
+
+    #Plan a path
+    left_plan = left_arm.plan()
+
+    #Right arm starting position
+    goal_right = PoseStamped()
+    goal_right.header.frame_id = "base"
+
+    #x, y, and z position
+    goal_right.pose.position.x = 0.0
+    goal_right.pose.position.y = -0.5
+    goal_right.pose.position.z = -0.6
+    
+    #Orientation as a quaternion
+    goal_right.pose.orientation.x = 0.0
+    goal_right.pose.orientation.y = -1.0
+    goal_right.pose.orientation.z = 0.0
+    goal_right.pose.orientation.w = 0.0
+
+    #Set the goal state to the pose you just defined
+    right_arm.set_pose_target(goal_right)
+
+    #Set the start state for the arm
+    right_arm.set_start_state_to_current_state()
+
+    #Plan a path
+    right_plan = right_arm.plan()
+
+    #Execute both plan
+    left_arm.execute(left_plan)
+    right_arm.execute(right_plan)  
+    
 def main():
+
+
     raw_input('Press <Enter> to move to start program: ')
     start_position()
     
-    #rospy.init_node('my_listener', anonymous=True)
     rospy.Subscriber("tf", tfMessage, callback)
     rospy.spin()
 
+       
+       
 if __name__ == '__main__':
-    main()
+    try:
+       main()
+    # keyboardinterrupt doesnt work here
+    except KeyboardInterrupt:
+       print "end"
+       #end_position()
+       pass
