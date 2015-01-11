@@ -4,7 +4,7 @@ An introduction for ROS package: kendo
 ## Dependents
 
 * RVIZ
-2. [MoveIt!(baxter_misc??)]
+2. MoveIt!(baxter_misc??)
 3. Baxter SDK
 4. Ar_track_alvar
 
