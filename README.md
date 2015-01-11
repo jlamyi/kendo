@@ -1,21 +1,20 @@
-# Kendo_robot
+# Kendo Robot
 An introduction for this source code
 
-DEPENDENTS
+# Dependents
 
 1. RVIZ
-2. MoveIt!
+2. MoveIt!(baxter_misc??)
 3. Baxter SDK
 4. Ar_track_alvar
-5. (baxter_misc??)
 
-HARDWARE
+# Hardware
 
 1. Baxter
 2. ARTag
 3. Sword (made from cardboard)
 
-RUN
+# Run
 
 roslaunch kendo kendo_robot.launch 
 
@@ -35,7 +34,7 @@ pulling a sword:
 
 rosrun kendo sword_pulling.py
 
-DOCUMENTATION
+# Documentation
 
 http://www.kendo.flippen.se/
 
