@@ -18,19 +18,19 @@ An introduction for this source code
 
 roslaunch kendo kendo_robot.launch 
 
-original:
+Original:
 
 rosrun kendo kendo_robot.py
 
-defense:
+Defense:
 
 rosrun kendo kendo_robot_defense.py
 
-fightback:
+Fightback:
 
 rosrun kendo kendo_robot_fightback.py
 
-pulling a sword:
+Pulling a sword:
 
 rosrun kendo sword_pulling.py
 
