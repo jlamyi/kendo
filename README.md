@@ -3,16 +3,17 @@ An introduction for this source code
 
 DEPENDENTS
 
-1. Rviz
-2. baxter_sdk
-3. ar_track_alvar
-4. baxter_misc???
-5. baxter_moveit packages???
-...
+1. RVIZ
+2. MoveIt!
+3. Baxter SDK
+4. Ar_track_alvar
+5. (baxter_misc??)
 
 HARDWARE
 
-Baxter
+1. Baxter
+2. ARTag
+3. Sword (made from cardboard)
 
 RUN
 
@@ -29,6 +30,10 @@ rosrun kendo kendo_robot_defense.py
 fightback:
 
 rosrun kendo kendo_robot_fightback.py
+
+pulling a sword:
+
+rosrun kendo sword_pulling.py
 
 DOCUMENTATION
 
