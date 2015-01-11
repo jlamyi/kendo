@@ -30,3 +30,7 @@ fightback:
 
 rosrun kendo kendo_robot_fightback.py
 
+DOCUMENTATION
+
+http://www.kendo.flippen.se/
+
