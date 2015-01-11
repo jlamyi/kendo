@@ -15,7 +15,7 @@
    <node name="OpenHeadCamera" pkg="baxter_tools" type="camera_control.py" respawn="false" output="screen" args="-o head_camera" />
 
    <!-- open rviz-->
-   <node name="rviz" pkg="rviz" type="rviz" respawn="false" output="screen" args="-d $(find kendo)/kendo_robot.rviz"/>
+   <node name="rviz" pkg="rviz" type="rviz" respawn="false" output="screen" args="-d $(find ar_track_alvar)/kendo_robot.rviz"/>
 
    <!-- open correct_headcam.py-->
    <node name="correct_headcam" pkg="kendo" type="correct_headcam.py" respawn="false" output="screen" />
