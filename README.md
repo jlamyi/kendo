@@ -1,7 +1,7 @@
 # Kendo Robot
 An introduction for ROS package: kendo
 
-## Dependents
+## Dependencies
 
 * RVIZ
 2. MoveIt!(baxter_misc??)
@@ -20,19 +20,21 @@ roslaunch kendo kendo_robot.launch
 
 Original:
 
+```
 rosrun kendo kendo_robot.py
 
-Defense:
+# Defense:
 
 rosrun kendo kendo_robot_defense.py
 
-Fightback:
+# Fightback:
 
 rosrun kendo kendo_robot_fightback.py
 
-Pulling a sword:
+# Pulling a sword:
 
 rosrun kendo sword_pulling.py
+```
 
 ## Documentation
 
