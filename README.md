@@ -15,12 +15,11 @@ An introduction for ROS package: kendo
 3. Sword (made from cardboard)
 
 ## Run
-
+```
 roslaunch kendo kendo_robot.launch 
 
-Original:
+# Original:
 
-```
 rosrun kendo kendo_robot.py
 
 # Defense:
