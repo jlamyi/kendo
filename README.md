@@ -14,7 +14,7 @@ An introduction for ROS package: kendo
 2. ARTag
 3. Sword (made from cardboard)
 
-## Run
+## Usage
 ```
 roslaunch kendo kendo_robot.launch 
 
